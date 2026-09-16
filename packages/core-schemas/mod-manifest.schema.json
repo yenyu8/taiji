@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://taiji.local/schemas/mod-manifest-0.1.json",
+  "title": "Taiji learning pack manifest v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "version", "kind", "core_api", "license", "permissions", "required_components", "entrypoints"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)+$"},
+    "name": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "pattern": "^0\\.1\\.[0-9]+$"},
+    "kind": {"const": "learning-pack"},
+    "core_api": {"const": ">=0.1,<0.2"},
+    "license": {"type": "string", "minLength": 1},
+    "permissions": {"type": "array", "maxItems": 0},
+    "required_components": {"type": "array", "items": {"enum": ["code-editor", "run-panel", "test-panel", "hint-panel"]}, "uniqueItems": true},
+    "entrypoints": {"type": "object", "additionalProperties": false, "required": ["plan"], "properties": {"plan": {"const": "plan.yaml"}}}
+  }
+}

@@ -1,0 +1,14 @@
+id: org.taiji.agent-developer
+name: Agent Developer Starter
+version: 0.1.0
+kind: learning-pack
+core_api: ">=0.1,<0.2"
+license: Apache-2.0
+permissions: []
+required_components:
+  - code-editor
+  - run-panel
+  - test-panel
+  - hint-panel
+entrypoints:
+  plan: plan.yaml

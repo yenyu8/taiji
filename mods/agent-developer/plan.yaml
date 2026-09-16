@@ -1,0 +1,42 @@
+goal:
+  id: goal.agent-developer.demo
+  title: 学习 Agent 开发
+  description: 从一个小型编程任务开始，理解工具函数如何返回结构化结果。
+  success_criteria: 独立完成任务并通过真实沙箱测试（当前 Demo 仅提供 mock 反馈）。
+skills:
+  - id: skill.tool-function
+    title: 编写工具函数
+    description: 定义函数并返回结构化结果，供后续 Agent 调用。
+    prerequisites: []
+tasks:
+  - id: task.tool-function.01
+    title: 编写天气工具函数
+    description: 编写 weather_tool(city)，返回包含 city 和 forecast 的字典。
+    skill_id: skill.tool-function
+    scene_id: scene.programming
+    starter_code: |
+      def weather_tool(city):
+          # 返回包含 city 和 forecast 的字典
+          pass
+    checks:
+      - id: function
+        label: 定义 weather_tool 函数
+        kind: text_contains
+        value: 'def weather_tool('
+      - id: return
+        label: 包含返回语句
+        kind: text_contains
+        value: 'return'
+      - id: fields
+        label: 包含 city 和 forecast 字段
+        kind: tokens_present
+        values: [city, forecast]
+scenes:
+  - id: scene.programming
+    title: 编程训练场
+    component_ids: [code-editor, run-panel, test-panel, hint-panel]
+components:
+  - {id: code-editor, title: 代码编辑器, kind: editor}
+  - {id: run-panel, title: 运行结果, kind: output}
+  - {id: test-panel, title: 测试结果, kind: checks}
+  - {id: hint-panel, title: AI Tutor, kind: tutor-placeholder}
