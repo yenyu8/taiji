@@ -1,15 +1,37 @@
 from datetime import datetime, timezone
 from uuid import uuid4
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from .loader import available_pack_ids, load_pack
 from .models import Evidence, Pack, RunRequest, RunResult
+from .ai import router as ai_router
 from .storage import get_override, install, is_installed, list_evidence, progress_for, save_evidence, set_override
 
 PACK_ID = available_pack_ids()[0]
 app = FastAPI(title="Taiji Core API", version="0.1.0")
+app.include_router(ai_router)
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=["localhost", "127.0.0.1", "[::1]", "testserver", "api"])
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_error(request: Request, exc: RequestValidationError):
+    # Never reflect a model connection's SecretStr input or credentials in validation responses.
+    return JSONResponse(status_code=422, content={"detail": "提交的数据格式不正确，请检查必填字段、地址和长度。",
+        "fields": [".".join(str(v) for v in error["loc"]) for error in exc.errors()]})
+
+
+@app.middleware("http")
+async def protect_model_requests(request: Request, call_next):
+    if request.url.path.startswith("/api/ai/"):
+        origin = request.headers.get("origin")
+        if origin and origin not in {"http://localhost:3000", "http://127.0.0.1:3000"}:
+            return JSONResponse(status_code=403, content={"detail": "不允许此页面调用模型接口。"})
+    return await call_next(request)
 app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
                    allow_methods=["GET", "POST", "PUT"], allow_headers=["Content-Type"])
 

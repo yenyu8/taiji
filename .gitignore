@@ -4,7 +4,16 @@ node_modules/
 __pycache__/
 .pytest_cache/
 .pytest_tmp/
+.test-tmp-*/
 *.pyc
 *.sqlite3
 .env.local
 dist/
+apps/web/public/runtime/
+apps/web/public/monaco/
+
+.env
+.env.*
+!.env.example
+*.log
+*.tsbuildinfo

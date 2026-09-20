@@ -1,6 +1,6 @@
 import './globals.css';
 
-export const metadata = { title: 'Taiji Core Demo', description: '模块化 AI-native 学习底座演示' };
+export const metadata = { title: '太极 · 学习工作台', description: '规划路线、学习教程、编程实践与 AI 辅导' };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return <html lang="zh-CN"><body>{children}</body></html>;

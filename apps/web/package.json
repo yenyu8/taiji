@@ -3,13 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/prepare-assets.mjs",
+    "prebuild": "node scripts/prepare-assets.mjs",
+    "test": "node scripts/test-learning.mjs && node scripts/test-runner-bridge.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
+    "monaco-editor": "^0.52.2",
     "next": "^16.3.5",
+    "pyodide": "^0.27.7",
     "react": "19.1.1",
     "react-dom": "19.1.1"
   },
